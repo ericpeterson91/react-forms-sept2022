@@ -8,32 +8,44 @@ export default function App() {
     email: "",
   });
 
-  const handleFirstName = event => {
-    setValues({
-      ...values,
-      firstName: event.target.value
-    })
-  }
+  const [submitted, setSubmitted] = useState(false);
 
-  const handleLastName = event => {
+  const handleFirstName = (event) => {
     setValues({
       ...values,
-      lastName: event.target.value
-    })
-  }
+      firstName: event.target.value,
+    });
+  };
 
-  const handleEmail = event => {
+  const handleLastName = (event) => {
     setValues({
       ...values,
-      email: event.target.value
-    })
-  }
-  
+      lastName: event.target.value,
+    });
+  };
+
+  const handleEmail = (event) => {
+    setValues({
+      ...values,
+      email: event.target.value,
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setSubmitted(true);
+  };
 
   return (
     <div class="form-container">
-      <form class="register-form">
+      <form class="register-form" onSubmit={handleSubmit}>
+        {submitted && values.firstName && values.lastName && values.email ? (
+          <div className="success-message">
+            Success! Thank you for registering.
+          </div>
+        ) : null}
         <input
+          disabled={submitted}
           onChange={handleFirstName}
           value={values.firstName}
           id="first-name"
@@ -42,7 +54,10 @@ export default function App() {
           placeholder="First Name"
           name="firstName"
         />
+        { submitted && !values.firstName ? <span>Please enter a first name</span> : null}
+
         <input
+          disabled={submitted}
           onChange={handleLastName}
           value={values.lastName}
           id="last-name"
@@ -51,7 +66,10 @@ export default function App() {
           placeholder="Last Name"
           name="lastName"
         />
+        {submitted && !values.lastName ? <span>Please enter a last name</span> : null}
+
         <input
+          disabled={submitted}
           onChange={handleEmail}
           value={values.email}
           id="email"
@@ -60,6 +78,8 @@ export default function App() {
           placeholder="Email"
           name="email"
         />
+        {submitted && !values.email ?<span>Please enter an email</span> : null}
+
         <button class="form-field" type="submit">
           Register
         </button>
